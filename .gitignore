@@ -1,0 +1,20 @@
+# 기상파일 작업 산출물
+# weather/archive/ 의 zip 은 고정 보관본이므로 커밋한다(아래 예외 규칙).
+# 압축을 풀어 나온 EPW/DDY/STAT 는 보관본에서 언제든 다시 만들 수 있으므로 제외한다.
+weather/epw/
+*.epw
+*.ddy
+*.stat
+KMA-TRY-PHIKO-EPW-*.zip
+
+# 고정 보관본은 예외로 포함한다
+!weather/archive/*.zip
+
+# 파이썬
+__pycache__/
+*.py[cod]
+
+# OS 생성 파일
+.DS_Store
+Thumbs.db
+desktop.ini

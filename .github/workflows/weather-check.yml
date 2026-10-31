@@ -1,0 +1,112 @@
+# 기상파일 상위 배포본 변경 감시
+#
+# 하는 일: 한 달에 한 번 climate.onebuilding.org 를 확인해
+#   · 고정한 22개 지점 파일이 바뀌었는지
+#   · TMYx 에 새 기간판이 생겼는지
+# 를 보고, 변경이 있으면 Issue 를 만든다.
+#
+# 하지 않는 일: 파일을 자동으로 교체하지 않는다.
+#   기준년(Reference Year)은 재현성이 목적이므로, 바뀌면 사람이 검증하고 결정한다.
+#   (weather/manifest.json 의 why_pinned 참조)
+
+name: 기상파일 갱신 감시
+
+on:
+  schedule:
+    # 매월 3일 02:17 UTC (한국시간 11:17). 정시를 피해 서버 혼잡을 비껴간다.
+    - cron: '17 2 3 * *'
+  workflow_dispatch:        # 손으로도 돌릴 수 있게
+
+permissions:
+  contents: read
+  issues: write             # 변경 감지 시 Issue 생성
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 상위 배포본 점검
+        id: check
+        continue-on-error: true
+        run: |
+          python3 scripts/weather/check_updates.py --github | tee check.log
+          echo "exit_code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+
+      - name: 점검 결과 요약에 기록
+        run: |
+          {
+            echo '## 기상파일 갱신 감시 결과'
+            echo
+            echo '```'
+            cat check.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 변경이 있으면 Issue 생성
+        if: steps.check.outputs.changed == 'true'
+        uses: actions/github-script@v7
+        env:
+          CHANGED_COUNT: ${{ steps.check.outputs.changed_count }}
+          CHANGED_STATIONS: ${{ steps.check.outputs.changed_stations }}
+          NEW_PERIODS: ${{ steps.check.outputs.new_periods }}
+        with:
+          script: |
+            const fs = require('fs');
+            const log = fs.readFileSync('check.log', 'utf8');
+            const count = process.env.CHANGED_COUNT || '0';
+            const stations = process.env.CHANGED_STATIONS || '';
+            const periods = process.env.NEW_PERIODS || '';
+
+            const title = periods
+              ? `기상파일: 신규 TMYx 기간판 ${periods}`
+              : `기상파일: 상위 배포본 변경 ${count}개 지점`;
+
+            // 같은 제목의 열린 Issue 가 있으면 중복 생성하지 않는다.
+            const existing = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'weather-data',
+            });
+            if (existing.data.some(i => i.title === title)) {
+              core.info('같은 제목의 열린 Issue 가 이미 있다. 생성하지 않는다.');
+              return;
+            }
+
+            const body = [
+              '상위 배포본(climate.onebuilding.org)에 변경이 감지되었습니다.',
+              '**파일은 자동으로 교체되지 않았습니다.**',
+              '',
+              stations ? `변경 지점: ${stations}` : '',
+              periods ? `신규 TMYx 기간판: ${periods}` : '',
+              '',
+              '### 점검 출력',
+              '```',
+              log.trim(),
+              '```',
+              '',
+              '### 처리 순서',
+              '1. `python3 scripts/weather/fetch.py` — 받아서 체크섬 불일치 확인',
+              '2. `python3 scripts/weather/verify_epw.py weather/epw` — 8,760행·일사 결측 확인',
+              '3. 기존 파일과 연간 적산값 비교 (`weather/manifest.json` 의 `verification` 과 대조)',
+              '4. 채택을 결정했으면 `weather/manifest.json` 갱신 + 커밋 메시지에 사유 기록',
+              '',
+              '> 기준년(Reference Year)을 바꾸면 이전 검토 결과와 비교할 수 없게 됩니다.',
+              '> 진행 중인 과업이 있으면 그 과업이 끝난 뒤에 갱신하십시오.',
+            ].filter(Boolean).join('\n');
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              body,
+              labels: ['weather-data'],
+            });
+
+      - name: 점검 자체가 실패했으면 작업도 실패 처리
+        if: steps.check.outputs.exit_code == '1'
+        run: |
+          echo "점검을 완료하지 못했다 (상위 서버 응답 불가 등). 다음 주기에 다시 시도된다."
+          exit 1

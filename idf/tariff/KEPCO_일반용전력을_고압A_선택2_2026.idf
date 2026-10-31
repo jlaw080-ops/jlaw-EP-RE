@@ -1,0 +1,370 @@
+! ============================================================================
+!  한국전력 일반용전력(을) 고압A 선택Ⅱ — EnergyPlus 요금 계산 입력
+! ============================================================================
+!  적용 대상 : 계약전력 300kW 이상 업무용 건물
+!  요금표     : 2026년 4월 16일 공표분 (이 종별 시행일 2026-06-01)
+!  근거       : energinno-DB  data/electricity/kepco_2026-04-16.json  (general-b)
+!               energinno-DB  data/electricity/부가요금_기후환경_연료비조정.json
+!  작성 기준  : EnergyPlus v26.2.0
+!
+!  쓰는 방법  : 이 파일 내용을 모델 IDF 끝에 붙여넣는다.
+!               Output:Table:SummaryReports 에 AllSummary 또는 TariffReport 가
+!               있어야 결과가 출력된다.
+!
+!  ※ 반영하지 못한 국내 규칙이 있다. 파일 맨 아래 "한계" 절을 반드시 읽을 것.
+! ============================================================================
+
+
+! ---------------------------------------------------------------------------
+!  0. 스케줄 자료형 (모델에 이미 있으면 중복 정의하지 말 것)
+! ---------------------------------------------------------------------------
+  ScheduleTypeLimits,
+    Any Number;              !- Name
+
+
+! ---------------------------------------------------------------------------
+!  1. 계절 구분 스케줄
+! ---------------------------------------------------------------------------
+!  한전 3계절을 EnergyPlus 4계절 코드에 대응시킨다.
+!     여름철(6~8월)        -> 3 Summer
+!     봄·가을철(3~5,9~10월) -> 2 Spring / 4 Autumn   (한전은 한 계절, E+ 는 둘로 나뉨)
+!     겨울철(11~2월)       -> 1 Winter
+!
+!  주의: 계절 경계는 반드시 검침월 경계와 일치해야 한다(EnergyPlus 제약).
+!        아래는 모두 월말이므로 조건을 만족한다.
+! ---------------------------------------------------------------------------
+  Schedule:Compact,
+    KEPCO_Season,            !- Name
+    Any Number,              !- Schedule Type Limits Name
+    Through: 2/28,           !- 겨울철 (1~2월)
+    For: AllDays,
+    Until: 24:00,1,
+    Through: 5/31,           !- 봄·가을철 (3~5월)
+    For: AllDays,
+    Until: 24:00,2,
+    Through: 8/31,           !- 여름철 (6~8월)
+    For: AllDays,
+    Until: 24:00,3,
+    Through: 10/31,          !- 봄·가을철 (9~10월)
+    For: AllDays,
+    Until: 24:00,4,
+    Through: 12/31,          !- 겨울철 (11~12월)
+    For: AllDays,
+    Until: 24:00,1;
+
+
+! ---------------------------------------------------------------------------
+!  2. 계시별 시간대 스케줄
+! ---------------------------------------------------------------------------
+!  코드 대응 : 경부하 -> 3 OffPeak / 중간부하 -> 4 MidPeak / 최대부하 -> 1 Peak
+!
+!  여름철·봄가을철   경 22-08 / 중 08-15, 21-22 / 최 15-21
+!  겨울철            경 22-08 / 중 08-09, 12-16, 19-22 / 최 09-12, 16-19
+!
+!  겨울철 시간대가 여름·봄가을과 다르므로 Through 블록을 계절별로 나눈다.
+! ---------------------------------------------------------------------------
+  Schedule:Compact,
+    KEPCO_TOU_Period,        !- Name
+    Any Number,              !- Schedule Type Limits Name
+
+    Through: 2/28,           !- 겨울철 (1~2월)
+    For: AllDays,
+    Until: 08:00,3,          !- 경부하
+    Until: 09:00,4,          !- 중간부하
+    Until: 12:00,1,          !- 최대부하
+    Until: 16:00,4,          !- 중간부하
+    Until: 19:00,1,          !- 최대부하
+    Until: 22:00,4,          !- 중간부하
+    Until: 24:00,3,          !- 경부하
+
+    Through: 5/31,           !- 봄·가을철 (3~5월)
+    For: AllDays,
+    Until: 08:00,3,
+    Until: 15:00,4,
+    Until: 21:00,1,
+    Until: 22:00,4,
+    Until: 24:00,3,
+
+    Through: 8/31,           !- 여름철 (6~8월)
+    For: AllDays,
+    Until: 08:00,3,
+    Until: 15:00,4,
+    Until: 21:00,1,
+    Until: 22:00,4,
+    Until: 24:00,3,
+
+    Through: 10/31,          !- 봄·가을철 (9~10월)
+    For: AllDays,
+    Until: 08:00,3,
+    Until: 15:00,4,
+    Until: 21:00,1,
+    Until: 22:00,4,
+    Until: 24:00,3,
+
+    Through: 12/31,          !- 겨울철 (11~12월)
+    For: AllDays,
+    Until: 08:00,3,
+    Until: 09:00,4,
+    Until: 12:00,1,
+    Until: 16:00,4,
+    Until: 19:00,1,
+    Until: 22:00,4,
+    Until: 24:00,3;
+
+
+! ---------------------------------------------------------------------------
+!  3. 요금제 선언
+! ---------------------------------------------------------------------------
+!  Output Meter Name 에 ElectricityPurchased:Facility 를 쓴다.
+!    Electricity:Facility      = 건물이 소비한 전력 전체
+!    ElectricityPurchased:Facility = 계통에서 사들인 전력
+!  신재생 자가발전이 있으면 두 값이 다르다. 요금은 사들인 전력에 붙으므로
+!  ZEB 검토에서는 반드시 Purchased 를 써야 한다. Electricity:Facility 를 쓰면
+!  자가발전분까지 요금을 매겨 절감액이 0 으로 나온다.
+! ---------------------------------------------------------------------------
+  UtilityCost:Tariff,
+    KEPCO_GeneralB_HVA_Opt2, !- Name
+    ElectricityPurchased:Facility,  !- Output Meter Name
+    kWh,                     !- Conversion Factor Choice
+    ,                        !- Energy Conversion Factor
+    ,                        !- Demand Conversion Factor
+    KEPCO_TOU_Period,        !- Time of Use Period Schedule Name
+    KEPCO_Season,            !- Season Schedule Name
+    ,                        !- Month Schedule Name (공란 = 월 경계 자동)
+    QuarterHour,             !- Demand Window Length (최대수요전력 15분 평균)
+    ,                        !- Monthly Charge or Variable Name
+    ,                        !- Minimum Monthly Charge or Variable Name
+    ,                        !- Real Time Pricing Charge Schedule Name
+    ,                        !- Customer Baseline Load Schedule Name
+    ;                        !- Group Name
+
+
+! ---------------------------------------------------------------------------
+!  4. 기본요금 — 8,320 원/kW
+! ---------------------------------------------------------------------------
+  UtilityCost:Charge:Simple,
+    KEPCO_BasicCharge,       !- Utility Cost Charge Simple Name
+    KEPCO_GeneralB_HVA_Opt2, !- Tariff Name
+    TotalDemand,             !- Source Variable
+    Annual,                  !- Season
+    DemandCharges,           !- Category Variable Name
+    8320;                    !- Cost per Unit Value or Variable Name
+
+
+! ---------------------------------------------------------------------------
+!  5. 전력량요금 — 계절 × 시간대 (원/kWh)
+! ---------------------------------------------------------------------------
+!  여름철   경 87.3  중 140.2  최 222.3
+!  봄·가을철 경 87.3  중 109.8  최 140.5
+!  겨울철   경 94.3  중 140.4  최 197.9
+!
+!  봄·가을철은 한전에서 한 계절이지만 EnergyPlus 는 Spring/Fall 로 나뉘므로
+!  같은 단가로 두 번 선언한다.
+! ---------------------------------------------------------------------------
+
+!  --- 여름철 ---
+  UtilityCost:Charge:Simple,
+    KEPCO_Summer_OffPeak,    !- Name
+    KEPCO_GeneralB_HVA_Opt2, !- Tariff Name
+    OffPeakEnergy,           !- Source Variable
+    Summer,                  !- Season
+    EnergyCharges,           !- Category Variable Name
+    87.3;                    !- Cost per Unit
+
+  UtilityCost:Charge:Simple,
+    KEPCO_Summer_MidPeak,
+    KEPCO_GeneralB_HVA_Opt2,
+    MidPeakEnergy,
+    Summer,
+    EnergyCharges,
+    140.2;
+
+  UtilityCost:Charge:Simple,
+    KEPCO_Summer_Peak,
+    KEPCO_GeneralB_HVA_Opt2,
+    PeakEnergy,
+    Summer,
+    EnergyCharges,
+    222.3;
+
+!  --- 봄·가을철 (Spring) ---
+  UtilityCost:Charge:Simple,
+    KEPCO_Spring_OffPeak,
+    KEPCO_GeneralB_HVA_Opt2,
+    OffPeakEnergy,
+    Spring,
+    EnergyCharges,
+    87.3;
+
+  UtilityCost:Charge:Simple,
+    KEPCO_Spring_MidPeak,
+    KEPCO_GeneralB_HVA_Opt2,
+    MidPeakEnergy,
+    Spring,
+    EnergyCharges,
+    109.8;
+
+  UtilityCost:Charge:Simple,
+    KEPCO_Spring_Peak,
+    KEPCO_GeneralB_HVA_Opt2,
+    PeakEnergy,
+    Spring,
+    EnergyCharges,
+    140.5;
+
+!  --- 봄·가을철 (Fall) — Spring 과 같은 단가 ---
+  UtilityCost:Charge:Simple,
+    KEPCO_Fall_OffPeak,
+    KEPCO_GeneralB_HVA_Opt2,
+    OffPeakEnergy,
+    Fall,
+    EnergyCharges,
+    87.3;
+
+  UtilityCost:Charge:Simple,
+    KEPCO_Fall_MidPeak,
+    KEPCO_GeneralB_HVA_Opt2,
+    MidPeakEnergy,
+    Fall,
+    EnergyCharges,
+    109.8;
+
+  UtilityCost:Charge:Simple,
+    KEPCO_Fall_Peak,
+    KEPCO_GeneralB_HVA_Opt2,
+    PeakEnergy,
+    Fall,
+    EnergyCharges,
+    140.5;
+
+!  --- 겨울철 ---
+  UtilityCost:Charge:Simple,
+    KEPCO_Winter_OffPeak,
+    KEPCO_GeneralB_HVA_Opt2,
+    OffPeakEnergy,
+    Winter,
+    EnergyCharges,
+    94.3;
+
+  UtilityCost:Charge:Simple,
+    KEPCO_Winter_MidPeak,
+    KEPCO_GeneralB_HVA_Opt2,
+    MidPeakEnergy,
+    Winter,
+    EnergyCharges,
+    140.4;
+
+  UtilityCost:Charge:Simple,
+    KEPCO_Winter_Peak,
+    KEPCO_GeneralB_HVA_Opt2,
+    PeakEnergy,
+    Winter,
+    EnergyCharges,
+    197.9;
+
+
+! ---------------------------------------------------------------------------
+!  6. 기후환경요금 · 연료비조정액
+! ---------------------------------------------------------------------------
+!  기후환경요금  9.0 원/kWh  (2023-05-16 요금표 기준)
+!      ※ 2024-01-01 이후 요금표에는 단가가 인쇄되지 않는다. 2026년에도 9원이라는
+!         보도만 있고 한전 공식 확인이 안 된 값이다. 한전ON 에서 확인할 것.
+!  연료비조정단가 5.0 원/kWh  (2026년 4분기, 보도 기준 / 상한 +5원)
+!      ※ 분기마다 바뀐다. 검토 시점의 값으로 반드시 교체할 것.
+! ---------------------------------------------------------------------------
+  UtilityCost:Charge:Simple,
+    KEPCO_ClimateCharge,     !- Name
+    KEPCO_GeneralB_HVA_Opt2,
+    TotalEnergy,
+    Annual,
+    Adjustment,              !- 기본요금·전력량요금에 더해져 '전기요금'을 이룬다
+    9.0;
+
+  UtilityCost:Charge:Simple,
+    KEPCO_FuelAdjustment,    !- Name
+    KEPCO_GeneralB_HVA_Opt2,
+    TotalEnergy,
+    Annual,
+    Adjustment,
+    5.0;
+
+
+! ---------------------------------------------------------------------------
+!  7. 전력산업기반기금 · 부가가치세
+! ---------------------------------------------------------------------------
+!  청구금액 = 전기요금 + 부가가치세 + 전력산업기반기금
+!
+!  EnergyPlus 계층에서
+!     Subtotal = EnergyCharges + DemandCharges + Adjustment  = 전기요금
+!     Total    = Subtotal + Taxes                            = 청구금액
+!  이므로 두 항목을 Subtotal 기준으로 Taxes 에 넣는다.
+!
+!  전력산업기반기금 2.7%  (2025-07-01 부 3.2% -> 2.7% 인하)
+!  부가가치세       10%
+! ---------------------------------------------------------------------------
+  UtilityCost:Charge:Simple,
+    KEPCO_PowerFund,         !- Name
+    KEPCO_GeneralB_HVA_Opt2,
+    Subtotal,
+    Annual,
+    Taxes,
+    0.027;
+
+  UtilityCost:Charge:Simple,
+    KEPCO_VAT,               !- Name
+    KEPCO_GeneralB_HVA_Opt2,
+    Subtotal,
+    Annual,
+    Taxes,
+    0.10;
+
+
+! ---------------------------------------------------------------------------
+!  8. 결과 출력 (모델에 이미 있으면 중복 정의하지 말 것)
+! ---------------------------------------------------------------------------
+  Output:Table:SummaryReports,
+    TariffReport,            !- 요금 계산 내역
+    AnnualBuildingUtilityPerformanceSummary;
+
+  OutputControl:Table:Style,
+    HTML;
+
+
+! ============================================================================
+!  한계 — 반영하지 못한 국내 규칙
+! ============================================================================
+!
+!  (1) 요금적용전력 규칙  ★ 가장 큰 차이
+!      한전 기본요금은 '요금적용전력' 에 붙는데, 그 값은
+!          max( 당월 최대수요전력,
+!               직전 11개월 중 최대수요전력,
+!               계약전력의 30% )
+!      이다. 이 IDF 는 당월 최대수요전력만 쓴다.
+!      → 과거 피크가 당월보다 높은 달은 기본요금이 과소 계산된다.
+!      → 직전 피크를 끌어오는 조항은 UtilityCost:Ratchet 으로 근사할 수 있다.
+!        다만 '직전 11개월 중 최대' 와 '계약전력 30% 하한' 을 동시에 만족시키려면
+!        UtilityCost:Computation 으로 직접 계산식을 써야 한다.
+!      → 피크 저감(수요관리) VE 검토를 할 때는 이 한계가 결과를 바꾼다.
+!
+!  (2) 원단위 절사·사사오입
+!      부가세는 원미만 4사5입, 전력산업기반기금은 10원미만 절사한다.
+!      EnergyPlus 는 이런 반올림을 하지 않는다.
+!      → 월 수 원 수준의 차이이므로 VE 대안 비교에는 영향이 없다.
+!
+!  (3) 역률요금
+!      지상·진상 역률에 따른 추가·감액이 있다. EnergyPlus 는 역률을 모르므로
+!      반영할 수 없다. 필요하면 별도 산정해 가산할 것.
+!
+!  (4) 주말·휴일 할인
+!      산업용(을)에 주말 할인이 신설되었다. 일반용(을)에는 해당 없으나,
+!      다른 종별로 바꿀 때는 For: Weekends 블록으로 시간대를 따로 주어야 한다.
+!      이 파일은 For: AllDays 만 쓴다.
+!
+!  (5) 윤년
+!      Through: 2/28 이므로 윤년 2월 29일은 다음 블록(봄·가을철)으로 넘어간다.
+!      TMY/TRY 기상파일은 8,760시간 비윤년이므로 실무상 문제가 없다.
+!      실측연도(AMY) 윤년 해석을 할 때는 2/29 로 바꿀 것.
+!
+!  → 검증 권고: 알고 있는 실제 고지서와 대조하십시오. 요금 모델은 틀려도
+!    오류가 나지 않고 그냥 틀린 숫자를 냅니다.
+! ============================================================================
