@@ -1,0 +1,520 @@
+{
+  "meta": {
+    "dataset": "kor_try_phiko_epw",
+    "title": "한국 기준기상연도(TRY) EnergyPlus 기상파일 — 채택 버전 고정",
+    "provenance": "기상청(KMA) 실측 2005~2014 → ISO 15927-4:2005 기준년 → Passive House Institute Korea 제작",
+    "distributor": "Climate.OneBuilding.org",
+    "pinned_at": "2026-10-31",
+    "station_count": 22,
+    "why_pinned": "기준년(Reference Year)은 재현성이 목적이므로 자동 교체하지 않는다. 상위 배포본이 재배포되더라도 여기 기록된 sha256 과 일치하는 파일만 채택한다. 갱신은 scripts/weather/check_updates.py 가 알려준 뒤 사람이 검토해 수행한다.",
+    "verification_rule": "rows=8760 이고 solar_missing=0 이어야 채택한다."
+  },
+  "stations": [
+    {
+      "station": "Heuksando",
+      "region_code": "CB",
+      "wmo": "471690",
+      "archive": "KOR_CB_Heuksando.471690_TRY_PHIKO.zip",
+      "source_url": "https://climate.onebuilding.org/WMO_Region_2_Asia/KOR_South_Korea/CB_Jeollabuk-do/KOR_CB_Heuksando.471690_TRY_PHIKO.zip",
+      "upstream": {
+        "etag": "\"5b356-64cb117c56a00\"",
+        "last_modified": "Tue, 10 Mar 2026 20:09:12 GMT",
+        "content_length": 373590
+      },
+      "sha256_zip": "9a73ebbf5ad710c020eea29e40888324b1804e65d2ec64d2cf1987300bf9c268",
+      "sha256_epw": "e28aa7825d33487857970092dc8ef5a27d9a7100982c6210af3429ff3a8f6fb4",
+      "verification": {
+        "rows": 8760,
+        "solar_missing": 0,
+        "drybulb_c_min": -3.2,
+        "drybulb_c_max": 31.1,
+        "global_horiz_kwh_m2": 1452.0,
+        "direct_normal_kwh_m2": 1190.0,
+        "diffuse_horiz_kwh_m2": 708.0
+      }
+    },
+    {
+      "station": "Jeonju",
+      "region_code": "CB",
+      "wmo": "471460",
+      "archive": "KOR_CB_Jeonju.471460_TRY_PHIKO.zip",
+      "source_url": "https://climate.onebuilding.org/WMO_Region_2_Asia/KOR_South_Korea/CB_Jeollabuk-do/KOR_CB_Jeonju.471460_TRY_PHIKO.zip",
+      "upstream": {
+        "etag": "\"5e813-64cb117c56a00\"",
+        "last_modified": "Tue, 10 Mar 2026 20:09:12 GMT",
+        "content_length": 387091
+      },
+      "sha256_zip": "d1725e68aba962bedc0932e0884528cbfb516589d35f0af93777ffd0ba0810da",
+      "sha256_epw": "0bd4953fa97cd068fc3648d101eb5f0030f9d10f2d010bcb8b02d3dd5eb16a82",
+      "verification": {
+        "rows": 8760,
+        "solar_missing": 0,
+        "drybulb_c_min": -11.6,
+        "drybulb_c_max": 37.8,
+        "global_horiz_kwh_m2": 1326.3,
+        "direct_normal_kwh_m2": 977.4,
+        "diffuse_horiz_kwh_m2": 742.5
+      }
+    },
+    {
+      "station": "Gosan",
+      "region_code": "CJ",
+      "wmo": "471850",
+      "archive": "KOR_CJ_Gosan.471850_TRY_PHIKO.zip",
+      "source_url": "https://climate.onebuilding.org/WMO_Region_2_Asia/KOR_South_Korea/CJ_Jeju-do/KOR_CJ_Gosan.471850_TRY_PHIKO.zip",
+      "upstream": {
+        "etag": "\"5c222-64cb117c56a00\"",
+        "last_modified": "Tue, 10 Mar 2026 20:09:12 GMT",
+        "content_length": 377378
+      },
+      "sha256_zip": "cf7e09b97f9cf512cbb97b2d83362c882280eccb4ec79ca1d0e6e40a7408a319",
+      "sha256_epw": "3eb63c88e35db77cfc0977a791ffa416b0cc10062cb0ad559917049853e5d79c",
+      "verification": {
+        "rows": 8760,
+        "solar_missing": 0,
+        "drybulb_c_min": -0.1,
+        "drybulb_c_max": 31.5,
+        "global_horiz_kwh_m2": 1444.4,
+        "direct_normal_kwh_m2": 1189.8,
+        "diffuse_horiz_kwh_m2": 706.4
+      }
+    },
+    {
+      "station": "Jeju",
+      "region_code": "CJ",
+      "wmo": "471840",
+      "archive": "KOR_CJ_Jeju.471840_TRY_PHIKO.zip",
+      "source_url": "https://climate.onebuilding.org/WMO_Region_2_Asia/KOR_South_Korea/CJ_Jeju-do/KOR_CJ_Jeju.471840_TRY_PHIKO.zip",
+      "upstream": {
+        "etag": "\"5bc39-64cb117c56a00\"",
+        "last_modified": "Tue, 10 Mar 2026 20:09:12 GMT",
+        "content_length": 375865
+      },
+      "sha256_zip": "89300cfb163149b1e75be08c5d5aae14f16f6257e35842ae7d1e947579452fc9",
+      "sha256_epw": "e42db688580f4ce4795c51fe4ded8d081ee47cff5fbcdc64fa58e501dae53b4f",
+      "verification": {
+        "rows": 8760,
+        "solar_missing": 0,
+        "drybulb_c_min": 0.1,
+        "drybulb_c_max": 34.4,
+        "global_horiz_kwh_m2": 1375.7,
+        "direct_normal_kwh_m2": 1057.5,
+        "diffuse_horiz_kwh_m2": 706.2
+      }
+    },
+    {
+      "station": "Mokpo",
+      "region_code": "CN",
+      "wmo": "471650",
+      "archive": "KOR_CN_Mokpo.471650_TRY_PHIKO.zip",
+      "source_url": "https://climate.onebuilding.org/WMO_Region_2_Asia/KOR_South_Korea/CN_Jeollanam-do/KOR_CN_Mokpo.471650_TRY_PHIKO.zip",
+      "upstream": {
+        "etag": "\"5d6db-64cb117c56a00\"",
+        "last_modified": "Tue, 10 Mar 2026 20:09:12 GMT",
+        "content_length": 382683
+      },
+      "sha256_zip": "4ecd0d6a8def9fd1cb93f4ae0aee2d7fffedb0cd01d48902484cc51c00e7ac9c",
+      "sha256_epw": "9249dc40fb41841f18f87e2b6c35925b0889907565c8d6cf9bb7cbde907b4100",
+      "verification": {
+        "rows": 8760,
+        "solar_missing": 0,
+        "drybulb_c_min": -8.2,
+        "drybulb_c_max": 31.2,
+        "global_horiz_kwh_m2": 1427.9,
+        "direct_normal_kwh_m2": 1135.0,
+        "diffuse_horiz_kwh_m2": 744.7
+      }
+    },
+    {
+      "station": "Cheongju",
+      "region_code": "HB",
+      "wmo": "471310",
+      "archive": "KOR_HB_Cheongju.471310_TRY_PHIKO.zip",
+      "source_url": "https://climate.onebuilding.org/WMO_Region_2_Asia/KOR_South_Korea/HB_Chungcheongbuk-do/KOR_HB_Cheongju.471310_TRY_PHIKO.zip",
+      "upstream": {
+        "etag": "\"5da22-64cb117a6e580\"",
+        "last_modified": "Tue, 10 Mar 2026 20:09:10 GMT",
+        "content_length": 383522
+      },
+      "sha256_zip": "54073b9c1fa337e4cc82d61bca46cc20bc586ba17020315ce62bd15646286975",
+      "sha256_epw": "edad1aca45d748be36c587ddfe07a35b5d9859830beeb6ac65df34dfb5fd0a95",
+      "verification": {
+        "rows": 8760,
+        "solar_missing": 0,
+        "drybulb_c_min": -12.2,
+        "drybulb_c_max": 34.6,
+        "global_horiz_kwh_m2": 1343.5,
+        "direct_normal_kwh_m2": 1014.2,
+        "diffuse_horiz_kwh_m2": 731.9
+      }
+    },
+    {
+      "station": "Chupungnyeong",
+      "region_code": "HB",
+      "wmo": "471350",
+      "archive": "KOR_HB_Chupungnyeong.471350_TRY_PHIKO.zip",
+      "source_url": "https://climate.onebuilding.org/WMO_Region_2_Asia/KOR_South_Korea/HB_Chungcheongbuk-do/KOR_HB_Chupungnyeong.471350_TRY_PHIKO.zip",
+      "upstream": {
+        "etag": "\"5c0aa-64cb117a6e580\"",
+        "last_modified": "Tue, 10 Mar 2026 20:09:10 GMT",
+        "content_length": 377002
+      },
+      "sha256_zip": "5f749771bae13a1ce129107428d260ad25cfb96391f98f05519a0ea713d0de70",
+      "sha256_epw": "6d5a033cb535fa333c337f742641ff276d838001b3ddf1b954241b8186560a57",
+      "verification": {
+        "rows": 8760,
+        "solar_missing": 0,
+        "drybulb_c_min": -13.6,
+        "drybulb_c_max": 33.0,
+        "global_horiz_kwh_m2": 1369.9,
+        "direct_normal_kwh_m2": 1144.4,
+        "diffuse_horiz_kwh_m2": 695.2
+      }
+    },
+    {
+      "station": "Seosan",
+      "region_code": "HN",
+      "wmo": "471290",
+      "archive": "KOR_HN_Seosan.471290_TRY_PHIKO.zip",
+      "source_url": "https://climate.onebuilding.org/WMO_Region_2_Asia/KOR_South_Korea/HN_Chungcheongnam-do/KOR_HN_Seosan.471290_TRY_PHIKO.zip",
+      "upstream": {
+        "etag": "\"5de4c-64cb117e3ee80\"",
+        "last_modified": "Tue, 10 Mar 2026 20:09:14 GMT",
+        "content_length": 384588
+      },
+      "sha256_zip": "8a0376d1b1b8623df9a0448c728c9dc4d6eb95d389a4070dbe8510939975f8ff",
+      "sha256_epw": "5e69a3da3ee1a2925938018e5e126f5596cb7adbbfd3c80a707ec8e2a74e9438",
+      "verification": {
+        "rows": 8760,
+        "solar_missing": 0,
+        "drybulb_c_min": -13.2,
+        "drybulb_c_max": 31.6,
+        "global_horiz_kwh_m2": 1337.3,
+        "direct_normal_kwh_m2": 1057.0,
+        "diffuse_horiz_kwh_m2": 719.3
+      }
+    },
+    {
+      "station": "Incheon",
+      "region_code": "IN",
+      "wmo": "471120",
+      "archive": "KOR_IN_Incheon.471120_TRY_PHIKO.zip",
+      "source_url": "https://climate.onebuilding.org/WMO_Region_2_Asia/KOR_South_Korea/IN_Incheon/KOR_IN_Incheon.471120_TRY_PHIKO.zip",
+      "upstream": {
+        "etag": "\"5d906-64cb117c56a00\"",
+        "last_modified": "Tue, 10 Mar 2026 20:09:12 GMT",
+        "content_length": 383238
+      },
+      "sha256_zip": "96a1475671e88650010c079bb8a6be974be1cb5c112d0c3f4673fef90539534a",
+      "sha256_epw": "a0e2ebb8b470ddb4421dd9b8d9417093c3584b6b5d8298b973c483664fd2e3fb",
+      "verification": {
+        "rows": 8760,
+        "solar_missing": 0,
+        "drybulb_c_min": -13.1,
+        "drybulb_c_max": 33.0,
+        "global_horiz_kwh_m2": 1300.5,
+        "direct_normal_kwh_m2": 1092.0,
+        "diffuse_horiz_kwh_m2": 680.5
+      }
+    },
+    {
+      "station": "Andong",
+      "region_code": "KB",
+      "wmo": "471360",
+      "archive": "KOR_KB_Andong.471360_TRY_PHIKO.zip",
+      "source_url": "https://climate.onebuilding.org/WMO_Region_2_Asia/KOR_South_Korea/KB_Gyeongsangbuk-do/KOR_KB_Andong.471360_TRY_PHIKO.zip",
+      "upstream": {
+        "etag": "\"5ddb6-64cb117a6e580\"",
+        "last_modified": "Tue, 10 Mar 2026 20:09:10 GMT",
+        "content_length": 384438
+      },
+      "sha256_zip": "e3ce113433be2e3d57ecac9f1d5dcf44b45385735c27e3df41064882341be2b6",
+      "sha256_epw": "cba3082a48853e1c89297288bf3dac895e8baa4e72b3972238e6f9acad582d38",
+      "verification": {
+        "rows": 8760,
+        "solar_missing": 0,
+        "drybulb_c_min": -14.4,
+        "drybulb_c_max": 33.6,
+        "global_horiz_kwh_m2": 1384.5,
+        "direct_normal_kwh_m2": 1134.9,
+        "diffuse_horiz_kwh_m2": 724.2
+      }
+    },
+    {
+      "station": "Pohang",
+      "region_code": "KB",
+      "wmo": "471380",
+      "archive": "KOR_KB_Pohang.471380_TRY_PHIKO.zip",
+      "source_url": "https://climate.onebuilding.org/WMO_Region_2_Asia/KOR_South_Korea/KB_Gyeongsangbuk-do/KOR_KB_Pohang.471380_TRY_PHIKO.zip",
+      "upstream": {
+        "etag": "\"5d1e9-64cb117e3ee80\"",
+        "last_modified": "Tue, 10 Mar 2026 20:09:14 GMT",
+        "content_length": 381417
+      },
+      "sha256_zip": "9c1407e4cf83b9075eda77b5e5d7a98d85ccc7be1f167003222713810a647d00",
+      "sha256_epw": "db4fdd4e69ba24c8fec7d317756751eddd385d389c7e1b143e06e82f93a27d74",
+      "verification": {
+        "rows": 8760,
+        "solar_missing": 0,
+        "drybulb_c_min": -9.9,
+        "drybulb_c_max": 35.7,
+        "global_horiz_kwh_m2": 1418.6,
+        "direct_normal_kwh_m2": 1270.6,
+        "diffuse_horiz_kwh_m2": 685.6
+      }
+    },
+    {
+      "station": "Suwon",
+      "region_code": "KG",
+      "wmo": "471190",
+      "archive": "KOR_KG_Suwon.471190_TRY_PHIKO.zip",
+      "source_url": "https://climate.onebuilding.org/WMO_Region_2_Asia/KOR_South_Korea/KG_Gyeonggi-do/KOR_KG_Suwon.471190_TRY_PHIKO.zip",
+      "upstream": {
+        "etag": "\"5db93-64cb117e3ee80\"",
+        "last_modified": "Tue, 10 Mar 2026 20:09:14 GMT",
+        "content_length": 383891
+      },
+      "sha256_zip": "4bb4b0ecc6fcfa5b3982ea41ddd014ae21a82b82cfe7530338009e5fc6a027f8",
+      "sha256_epw": "438b3eb1e7a75ae935d8aa9c2eaa05717e53d0c217b1a929c8caf1209bf50501",
+      "verification": {
+        "rows": 8760,
+        "solar_missing": 0,
+        "drybulb_c_min": -12.5,
+        "drybulb_c_max": 34.8,
+        "global_horiz_kwh_m2": 1346.9,
+        "direct_normal_kwh_m2": 1097.0,
+        "diffuse_horiz_kwh_m2": 713.2
+      }
+    },
+    {
+      "station": "Gwangju",
+      "region_code": "KJ",
+      "wmo": "471560",
+      "archive": "KOR_KJ_Gwangju.471560_TRY_PHIKO.zip",
+      "source_url": "https://climate.onebuilding.org/WMO_Region_2_Asia/KOR_South_Korea/KJ_Gwangju/KOR_KJ_Gwangju.471560_TRY_PHIKO.zip",
+      "upstream": {
+        "etag": "\"5ee0c-64cb117c56a00\"",
+        "last_modified": "Tue, 10 Mar 2026 20:09:12 GMT",
+        "content_length": 388620
+      },
+      "sha256_zip": "1519180b9ac7d988967c027f190691917469b93f802cfac4de6433a0c0b4a6c3",
+      "sha256_epw": "297bdea1071f226346fe774f0bf2102dec20c32fedca25827abd91778fd62a02",
+      "verification": {
+        "rows": 8760,
+        "solar_missing": 0,
+        "drybulb_c_min": -11.0,
+        "drybulb_c_max": 35.0,
+        "global_horiz_kwh_m2": 1452.0,
+        "direct_normal_kwh_m2": 1237.6,
+        "diffuse_horiz_kwh_m2": 726.4
+      }
+    },
+    {
+      "station": "Jinju",
+      "region_code": "KN",
+      "wmo": "471920",
+      "archive": "KOR_KN_Jinju.471920_TRY_PHIKO.zip",
+      "source_url": "https://climate.onebuilding.org/WMO_Region_2_Asia/KOR_South_Korea/KN_Gyeongsangnam-do/KOR_KN_Jinju.471920_TRY_PHIKO.zip",
+      "upstream": {
+        "etag": "\"5d5f6-64cb117c56a00\"",
+        "last_modified": "Tue, 10 Mar 2026 20:09:12 GMT",
+        "content_length": 382454
+      },
+      "sha256_zip": "899da4713e25dbc89aca87826d1585a079bc7b225f97830a6cba3fc6565c5740",
+      "sha256_epw": "5726d6e618be73d4bf74b52708a947ce1f95016f84ebf00c0854fa2f490a0a1b",
+      "verification": {
+        "rows": 8760,
+        "solar_missing": 0,
+        "drybulb_c_min": -13.8,
+        "drybulb_c_max": 34.7,
+        "global_horiz_kwh_m2": 1510.6,
+        "direct_normal_kwh_m2": 1406.9,
+        "diffuse_horiz_kwh_m2": 697.4
+      }
+    },
+    {
+      "station": "Chuncheon",
+      "region_code": "KW",
+      "wmo": "471010",
+      "archive": "KOR_KW_Chuncheon.471010_TRY_PHIKO.zip",
+      "source_url": "https://climate.onebuilding.org/WMO_Region_2_Asia/KOR_South_Korea/KW_Gangwon-do/KOR_KW_Chuncheon.471010_TRY_PHIKO.zip",
+      "upstream": {
+        "etag": "\"5ccac-64cb117a6e580\"",
+        "last_modified": "Tue, 10 Mar 2026 20:09:10 GMT",
+        "content_length": 380076
+      },
+      "sha256_zip": "20d36e84408218b7af2c0f78e19e5d99ebc24df67efbbcf4561fdee19488772c",
+      "sha256_epw": "bef0b553bdc87c8932ba56270120661e3703494e9e00a4199ac2e529474015e3",
+      "verification": {
+        "rows": 8760,
+        "solar_missing": 0,
+        "drybulb_c_min": -16.3,
+        "drybulb_c_max": 33.4,
+        "global_horiz_kwh_m2": 1361.1,
+        "direct_normal_kwh_m2": 1152.4,
+        "diffuse_horiz_kwh_m2": 707.0
+      }
+    },
+    {
+      "station": "Daegwallyeong",
+      "region_code": "KW",
+      "wmo": "471000",
+      "archive": "KOR_KW_Daegwallyeong.471000_TRY_PHIKO.zip",
+      "source_url": "https://climate.onebuilding.org/WMO_Region_2_Asia/KOR_South_Korea/KW_Gangwon-do/KOR_KW_Daegwallyeong.471000_TRY_PHIKO.zip",
+      "upstream": {
+        "etag": "\"5d5e3-64cb117a6e580\"",
+        "last_modified": "Tue, 10 Mar 2026 20:09:10 GMT",
+        "content_length": 382435
+      },
+      "sha256_zip": "2337853b8c7e64d6815eaae9cba1acb527efee13e0b2be2033dc3e8c077da764",
+      "sha256_epw": "69ded3fa1dabdcaa16b6354897c307ecdbf74a49ea53d87706cc974e04a83722",
+      "verification": {
+        "rows": 8760,
+        "solar_missing": 0,
+        "drybulb_c_min": -20.1,
+        "drybulb_c_max": 28.9,
+        "global_horiz_kwh_m2": 1414.9,
+        "direct_normal_kwh_m2": 1314.4,
+        "diffuse_horiz_kwh_m2": 664.1
+      }
+    },
+    {
+      "station": "Gangneung",
+      "region_code": "KW",
+      "wmo": "471050",
+      "archive": "KOR_KW_Gangneung.471050_TRY_PHIKO.zip",
+      "source_url": "https://climate.onebuilding.org/WMO_Region_2_Asia/KOR_South_Korea/KW_Gangwon-do/KOR_KW_Gangneung.471050_TRY_PHIKO.zip",
+      "upstream": {
+        "etag": "\"5ba64-64cb117c56a00\"",
+        "last_modified": "Tue, 10 Mar 2026 20:09:12 GMT",
+        "content_length": 375396
+      },
+      "sha256_zip": "aad512f356a2884d59f1767e87723b424cca8832a3a1c3a98018cb5501304f34",
+      "sha256_epw": "6234c3b7b3c81a60f9bf649580975ede41505356f842a48c09ecb3b739df89a8",
+      "verification": {
+        "rows": 8760,
+        "solar_missing": 0,
+        "drybulb_c_min": -8.6,
+        "drybulb_c_max": 35.7,
+        "global_horiz_kwh_m2": 1350.5,
+        "direct_normal_kwh_m2": 1234.7,
+        "diffuse_horiz_kwh_m2": 635.7
+      }
+    },
+    {
+      "station": "Wonju",
+      "region_code": "KW",
+      "wmo": "471140",
+      "archive": "KOR_KW_Wonju.471140_TRY_PHIKO.zip",
+      "source_url": "https://climate.onebuilding.org/WMO_Region_2_Asia/KOR_South_Korea/KW_Gangwon-do/KOR_KW_Wonju.471140_TRY_PHIKO.zip",
+      "upstream": {
+        "etag": "\"5d79b-64cb117e3ee80\"",
+        "last_modified": "Tue, 10 Mar 2026 20:09:14 GMT",
+        "content_length": 382875
+      },
+      "sha256_zip": "e3bfbe091dd2cb78b7e22a921630165c76c16ad69850ce624bd16ff57751ed17",
+      "sha256_epw": "7ddc39281eb50eabc1d703d84986bebfb31e80e1f9402eef76cecb3d4ef867d7",
+      "verification": {
+        "rows": 8760,
+        "solar_missing": 0,
+        "drybulb_c_min": -15.9,
+        "drybulb_c_max": 34.1,
+        "global_horiz_kwh_m2": 1329.7,
+        "direct_normal_kwh_m2": 1068.8,
+        "diffuse_horiz_kwh_m2": 704.8
+      }
+    },
+    {
+      "station": "Busan",
+      "region_code": "PU",
+      "wmo": "471590",
+      "archive": "KOR_PU_Busan.471590_TRY_PHIKO.zip",
+      "source_url": "https://climate.onebuilding.org/WMO_Region_2_Asia/KOR_South_Korea/PU_Busan/KOR_PU_Busan.471590_TRY_PHIKO.zip",
+      "upstream": {
+        "etag": "\"5d8aa-64cb117a6e580\"",
+        "last_modified": "Tue, 10 Mar 2026 20:09:10 GMT",
+        "content_length": 383146
+      },
+      "sha256_zip": "2d3054e5f9950dedc2e255c699d3dcbb5a5939be7860225244982178d6f5f747",
+      "sha256_epw": "08d56c1bfbbb91f98d6fd48955895787ceca27eadc89b9631bdf5bdc0173262a",
+      "verification": {
+        "rows": 8760,
+        "solar_missing": 0,
+        "drybulb_c_min": -7.4,
+        "drybulb_c_max": 32.0,
+        "global_horiz_kwh_m2": 1490.8,
+        "direct_normal_kwh_m2": 1374.4,
+        "diffuse_horiz_kwh_m2": 675.3
+      }
+    },
+    {
+      "station": "Seoul",
+      "region_code": "SO",
+      "wmo": "471080",
+      "archive": "KOR_SO_Seoul.471080_TRY_PHIKO.zip",
+      "source_url": "https://climate.onebuilding.org/WMO_Region_2_Asia/KOR_South_Korea/SO_Seoul/KOR_SO_Seoul.471080_TRY_PHIKO.zip",
+      "upstream": {
+        "etag": "\"5c795-64cb117e3ee80\"",
+        "last_modified": "Tue, 10 Mar 2026 20:09:14 GMT",
+        "content_length": 378773
+      },
+      "sha256_zip": "db179a8f80f05b7694999004223e4d1b9a6f1bc58e7fa307f5ce9456182418ab",
+      "sha256_epw": "631d00fdda36b11e2e2a7a177af2fbe0e2d55f0cd924bfa0ab06985c5aff41bf",
+      "verification": {
+        "rows": 8760,
+        "solar_missing": 0,
+        "drybulb_c_min": -13.0,
+        "drybulb_c_max": 33.4,
+        "global_horiz_kwh_m2": 1238.7,
+        "direct_normal_kwh_m2": 969.4,
+        "diffuse_horiz_kwh_m2": 671.0
+      }
+    },
+    {
+      "station": "Daegu",
+      "region_code": "TG",
+      "wmo": "471430",
+      "archive": "KOR_TG_Daegu.471430_TRY_PHIKO.zip",
+      "source_url": "https://climate.onebuilding.org/WMO_Region_2_Asia/KOR_South_Korea/TG_Daegu/KOR_TG_Daegu.471430_TRY_PHIKO.zip",
+      "upstream": {
+        "etag": "\"5c383-64cb117a6e580\"",
+        "last_modified": "Tue, 10 Mar 2026 20:09:10 GMT",
+        "content_length": 377731
+      },
+      "sha256_zip": "2c60b0b750866bd4067d4198b0fb6976865da762517ed1ae0780e6a3f3ee9352",
+      "sha256_epw": "c9702c9621f36829ce3e58fe6763409893cce4aefd393cf1296e4f6b1534e968",
+      "verification": {
+        "rows": 8760,
+        "solar_missing": 0,
+        "drybulb_c_min": -9.0,
+        "drybulb_c_max": 35.1,
+        "global_horiz_kwh_m2": 1389.4,
+        "direct_normal_kwh_m2": 1169.4,
+        "diffuse_horiz_kwh_m2": 705.5
+      }
+    },
+    {
+      "station": "Daejeon",
+      "region_code": "TJ",
+      "wmo": "471330",
+      "archive": "KOR_TJ_Daejeon.471330_TRY_PHIKO.zip",
+      "source_url": "https://climate.onebuilding.org/WMO_Region_2_Asia/KOR_South_Korea/TJ_Daejeon/KOR_TJ_Daejeon.471330_TRY_PHIKO.zip",
+      "upstream": {
+        "etag": "\"5e68f-64cb117a6e580\"",
+        "last_modified": "Tue, 10 Mar 2026 20:09:10 GMT",
+        "content_length": 386703
+      },
+      "sha256_zip": "1a064223eecc36c811e03bfc294dd9f5cac57fd4c7c8033ed2e784dcd4e2d5a5",
+      "sha256_epw": "efe04817c2edbdb209b24ce962b23526562d2ed69c486b5300b6ebb0ef8c93b0",
+      "verification": {
+        "rows": 8760,
+        "solar_missing": 0,
+        "drybulb_c_min": -14.1,
+        "drybulb_c_max": 34.2,
+        "global_horiz_kwh_m2": 1382.9,
+        "direct_normal_kwh_m2": 1174.9,
+        "diffuse_horiz_kwh_m2": 697.8
+      }
+    }
+  ]
+}
