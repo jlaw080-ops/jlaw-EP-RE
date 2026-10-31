@@ -1,0 +1,12 @@
+# 전달용 기상데이터 묶음
+# 원본은 climate.onebuilding.org 에서 받습니다(저장소에 바이너리를 넣지 않습니다).
+# 출처와 받는 방법은 docs/07-공식문서-색인.md 참조.
+KMA-TRY-PHIKO-EPW-*.zip
+*.epw
+*.ddy
+*.stat
+
+# OS 생성 파일
+.DS_Store
+Thumbs.db
+desktop.ini
